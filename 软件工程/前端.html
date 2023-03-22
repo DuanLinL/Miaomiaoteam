@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>代办列表</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+  <div class="header">
+    猫猫代办
+  </div>
+
+  <div class="container">
+    <div class="left_table" >
+      <h1>代办事项</h1>
+      <ul>
+        <li class="but"><span class="text">我的一天</span></li>
+        <li class="but"><span class="text">计划内</span></li>
+        <li class="but"><span class="text">重要</span></li>
+        <li class="but"><span class="text">任务</span></li>
+      </ul>
+    </div>
+    <div class="box" style="display: block;">
+      <h1>空白页</h1>
+      <div class="item" >
+        我的一天
+      </div>
+      <div class="item" >
+        计划内
+      </div>
+      <div class="item" >
+        重要
+      </div>
+      <div class="item" >
+        任务
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+  <script src="jQuery.js"></script>
+  <script >
+    //tab的变色和页面切换
+    $(function(){
+        $(".left_table li").click(function(){
+            $(this).addClass("current").siblings().removeClass("current");
+            var index =$(this).index();
+            $(".box .item").eq(index).show().siblings().hide();
+        })
+    })
+  </script>
+</html>
