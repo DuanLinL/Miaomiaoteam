@@ -17,11 +17,11 @@
 重点就是 div 
 
 #### css
-学习 选择器 id 和 class
-位置参数 top left padding margin....
-如何定位 position :relavent / absolution / static ....
-设置为块元素或者行元素 （还要其他） display 
-弹性窗口 有利于屏幕大小不同时候仍然定位在需要的位置 display：flex
++ 学习 选择器 id 和 class
++ 位置参数 top left padding margin....
++ 如何定位 position :relavent / absolution / static ....
++ 设置为块元素或者行元素 （还要其他） display 
++ 弹性窗口 有利于屏幕大小不同时候仍然定位在需要的位置 display：flex
 
 #### js
 大概知道是什么就好 我也不会
