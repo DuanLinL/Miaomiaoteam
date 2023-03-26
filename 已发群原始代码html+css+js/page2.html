@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MiaomiaoToDo</title>
+  <link rel="stylesheet" href="page2.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+
+  <div class="header">
+    MiaomiaoToDo
+  </div>
+
+  <div class="container">
+    <div class="left_table">
+      <h1>待办事项</h1>
+      <ul>
+        <li class="but" data-category="my-day"><span class="text">我的一天</span></li>
+        <li class="but" data-category="planned"><span class="text">计划内</span></li>
+        <li class="but" data-category="important"><span class="text">重要</span></li>
+        <li class="but" data-category="tasks"><span class="text">任务</span></li>
+      </ul>
+      <!-- 在 .left_table 内添加新建分类表单 -->
+      <div class="add-category-form">
+        <input type="text" class="add-category-input" placeholder="新建分类">
+        <button class="add-category-button">+</button>
+      </div>
+    </div>
+    <div class="box">
+      <div class="item" id="my-day">
+        <h1>我的一天</h1>
+        <form class="task-form">
+          <input type="text" placeholder="添加任务">
+          <button type="submit">+</button>
+        </form>
+        <ul class="task-list"></ul>
+        <div class="incomplete-task-count"></div>
+      </div>
+      <div class="item" id="planned" style="display: none;">
+        <h1>计划内</h1>
+        <form class="task-form">
+          <input type="text" placeholder="添加任务">
+          <button type="submit">+</button>
+        </form>
+        <ul class="task-list"></ul>
+        <div class="incomplete-task-count"></div>
+      </div>
+      <div class="item" id="important" style="display: none;">
+        <h1>重要</h1>
+        <form class="task-form">
+          <input type="text" placeholder="添加任务">
+          <button type="submit">+</button>
+        </form>
+        <ul class="task-list"></ul>
+        <div class="incomplete-task-count"></div>
+      </div>
+      <div class="item" id="tasks" style="display: none;">
+        <h1>任务</h1>
+        <form class="task-form">
+          <input type="text" placeholder="添加任务">
+          <button type="submit">+</button>
+        </form>
+        <ul class="task-list"></ul>
+        <div class="incomplete-task-count"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ... 右边隐藏侧栏 ... -->
+
+  <div class="sidebar">
+    <h2>编辑任务</h2>
+    <label for="due-date">截止时间：</label>
+    <input type="date" id="due-date">
+    <br>
+    <label for="reminder">提醒时间：</label>
+    <input type="datetime-local" id="reminder">
+    <br>
+    <label for="repeat">重复：</label>
+    <select id="repeat">
+      <option value="none">不重复</option>
+      <option value="daily">每天</option>
+      <option value="weekly">每周</option>
+      <option value="monthly">每月</option>
+      <option value="yearly">每年</option>
+    </select>
+    <br>
+    <label for="note">备注：</label>
+    <textarea id="note" rows="4"></textarea>
+    <br>
+    <label for="importance">重要性：</label>
+    <input type="range" id="importance" min="1" max="5">
+    <br>
+    <button id="save-changes">保存更改</button>
+    <button id="close-sidebar">关闭</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="page2.js"></script>
+</body>
+</html>
