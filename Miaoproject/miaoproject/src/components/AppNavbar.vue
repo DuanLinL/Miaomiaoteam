@@ -1,53 +1,113 @@
 <template>
+  <div>
     <nav class="navbar">
       <div class="navbar-brand">
-        <span class="navbar-item">待办事项管理</span>
-      </div>
-      <div class="navbar-menu">
-        <div class="navbar-end">
-          <button class="navbar-item button is-primary" @click="$emit('createList')">新建分类列表</button>
+        <div class="left">
+          <img src="@/assets/icon/miaomiao.png" alt="Logo" class="logo" />
+          <span class="title">MiaomiaoTodo</span>
+        </div>
+        <div class="right">
+          <img src="@/assets/icon/settings.png" alt="Settings" class="icon" @click="toggleSettings" />
+          <img src="@/assets/icon/help.png" alt="Help" class="icon" @click="toggleHelp" />
         </div>
       </div>
     </nav>
-  </template>
-  
-  <script>
-  export default {
-    name: "AppNavbar",
-  };
-  </script>
-  
-  <style scoped>
+    <SettingsSidebar :show="showSettings" @close="toggleSettings" />
+    <HelpSidebar :show="showHelp" @close="toggleHelp" />
+  </div>
+</template>
+
+<script>
+import SettingsSidebar from "./SettingsSidebar.vue";
+import HelpSidebar from "./HelpSidebar.vue";
+
+export default {
+  name: "AppNavbar",
+  components: {
+    SettingsSidebar,
+    HelpSidebar,
+  },
+  data() {
+    return {
+      showSettings: false,
+      showHelp: false,
+    };
+  },
+  methods: {
+    toggleSettings() {
+      this.showSettings = !this.showSettings;
+    },
+    toggleHelp() {
+      this.showHelp = !this.showHelp;
+    },
+  },
+};
+</script> 
+
+<style scoped>
+.navbar {
+  background-color: #e6ee49;
+  color: #292323;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 30px;
+  margin-right: 5px;
+}
+
+.icon {
+  height: 20px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.title {
+  font-family: "Arial", sans-serif; /* 设置字体 */
+  font-size: 20px; /* 设置字体大小 */
+  font-weight: bold; /* 设置字体粗细 */
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
   .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2c3e50;
-    color: #ffffff;
-    padding: 0 1rem;
-    height: 60px;
+    flex-direction: column;
   }
-  
+
   .navbar-brand {
-    font-size: 1.2rem;
+    flex-direction: column;
   }
-  
-  .navbar-item {
-    display: inline-block;
-    padding: 0.5rem;
-    color: #ffffff;
+
+  .left {
+    margin-bottom: 10px;
   }
-  
-  .button.is-primary {
-    background-color: #4a90e2;
-    border-color: transparent;
-    color: #ffffff;
-    font-size: 0.9rem;
+
+  .right {
+    margin-top: 10px;
   }
-  
-  .button.is-primary:hover {
-    background-color: #3a78c3;
-    border-color: transparent;
-  }
-  </style>
+}
+</style>
+
+
+
+
   

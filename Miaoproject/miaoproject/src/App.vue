@@ -1,49 +1,40 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar /> <!-- 导航栏组件 -->
     <div class="main-content">
-      <Sidebar @selectList="updateSelectedList" />
-      <TaskList :selectedList="selectedList" @updateCatReward="updateCatReward" />
+      <TaskSidebar @selectList="updateSelectedList" :selected-list="selectedList" /> <!-- 侧边栏组件，用于选择待办事项列表 -->
     </div>
-    <CatReward :catFood="catFood" />
-    <CatInteraction />
   </div>
 </template>
 
 <script>
-import Navbar from "./components/AppNavbar.vue";
-import Sidebar from "./components/TaskSidebar.vue";
-import TaskList from "./components/TaskList.vue";
-import CatReward from "./components/CatReward.vue";
-import CatInteraction from "./components/CatInteraction.vue";
+import Navbar from "./components/AppNavbar.vue"; // 导入导航栏组件
+import TaskSidebar from "./components/TaskSidebar.vue"; // 导入侧边栏组件
 
 export default {
   name: "App",
   components: {
-    Navbar,
-    Sidebar,
-    TaskList,
-    CatReward,
-    CatInteraction,
+    Navbar, // 注册导航栏组件
+    TaskSidebar, // 注册侧边栏组件
   },
   data() {
     return {
-      selectedList: "",
-      catFood: 0,
+      
     };
   },
   methods: {
-    updateSelectedList(list) {
-      this.selectedList = list;
-    },
-    updateCatReward(reward) {
-      this.catFood += reward;
-    },
+    
   },
 };
+
 </script>
 
 <style>
+
+body {
+  margin: 0;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
