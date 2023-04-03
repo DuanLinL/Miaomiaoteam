@@ -56,7 +56,7 @@ export default {
 
 .logo {
   height: 30px;
-  background-color: #c8c8c3;
+  background-color: #ffffff;
   border-radius: 5px;
   margin-left: 5px;
   margin-right: 5px;
@@ -80,7 +80,7 @@ export default {
 }
 
 .line {
-  background-color: #e6ee49;
+  background-color: #ffffff;
   list-style-type: none;
   border-radius: 18px;
   padding: 4px 4px; /* 更改为 0 左右内边距 */
