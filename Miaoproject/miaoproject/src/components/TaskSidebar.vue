@@ -10,8 +10,9 @@
           <li
             v-for="(list, index) in defaultLists"
             :key="`default-${index}`"
-            :class="{ 'is-selected': selectedList === list.name }"
-            @click="selectList(list.name)"
+            :class="{ '': selectedList === list.name }"
+            @click="selectList(list.name); OutActionBoxNum=index"
+
           >
             <img :src="iconPath(list.icon)" alt="List icon" class="list-icon" />
             {{ list.name }}
@@ -73,7 +74,8 @@
         </div>
         </ul>
       </div>
-    </div>   
+    </div>
+
   </div>
 
   <!-- 新建分类列表删除按钮 -->
@@ -90,10 +92,16 @@
       @click="deleteList(selectedListIndex); contextMenuVisible = false"
     />
   </div>
+
+  <TaskList :action-box-num="OutActionBoxNum"/> <!-- 列表组件，用于显示待办事项列表 -->
+
 </template>
 
 
 <script>
+
+import TaskList from "./TaskList.vue";
+
 export default {
   name: "TaskSidebar",
   props: {
@@ -102,6 +110,9 @@ export default {
       required: true,
     },
   },
+  components: {
+    TaskList, // 注册任务列表组件
+  },
   data() {
     return {
       defaultLists: [
@@ -109,6 +120,7 @@ export default {
         { name: "重要", tasks: [], icon: "star.png" },
         { name: "全部任务", tasks: [], icon: "alltask.png" },
       ],
+      OutActionBoxNum: 0,
       customLists: [],
       newListName: "",
       showAddListInput: false, // 是否显示新建列表输入框

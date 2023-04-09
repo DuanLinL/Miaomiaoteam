@@ -3,7 +3,7 @@
     <Navbar /> <!-- 导航栏组件 -->
     <div class="main-content">
       <TaskSidebar @selectList="updateSelectedList" :selected-list="selectedList" /> <!-- 侧边栏组件，用于选择待办事项列表 -->
-      <TaskList @selectList="updateSelectedList" :selected-list="selectedList" /> <!-- 列表组件，用于显示待办事项列表 -->
+<!--      <TaskList @selectList="updateSelectedList" :selected-list="selectedList" /> &lt;!&ndash; 列表组件，用于显示待办事项列表 &ndash;&gt;-->
     </div>
   </div>
 </template>
@@ -11,14 +11,14 @@
 <script>
 import Navbar from "./components/AppNavbar.vue"; // 导入导航栏组件
 import TaskSidebar from "./components/TaskSidebar.vue"; // 导入侧边栏组件
-import TaskList from "./components/TaskList.vue"; // 导入任务列表组件
+// import TaskList from "./components/TaskList.vue"; // 导入任务列表组件
 
 export default {
   name: "App",
   components: {
     Navbar, // 注册导航栏组件
     TaskSidebar, // 注册侧边栏组件
-    TaskList, // 注册任务列表组件
+    // TaskList, // 注册任务列表组件
   },
   data() {
     return {
