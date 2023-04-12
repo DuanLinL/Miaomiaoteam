@@ -9,7 +9,7 @@
           <!-- 默认分类列表 -->
           <li
             v-for="(list, index) in defaultLists"
-            :key="`default-${index}`"
+            :key="index"
             :class="{ '': selectedList === list.name }"
             @click="selectList(list.name); OutActionBoxNum=index"
 
@@ -34,7 +34,7 @@
           <!-- 自定义分类列表 -->
           <li
             v-for="(list, index) in customLists"
-            :key="`custom-${index}`"
+            :key="index"
             :class="{ 'is-selected': selectedList === list.name }"
             @click="selectList(list.name)"
             @contextmenu.prevent="showContextMenu($event, index)"
