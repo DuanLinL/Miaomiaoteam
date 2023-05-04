@@ -11,13 +11,14 @@
             v-for="(list, index) in defaultLists"
             :key="`default-${index}`"
             :class="{ '': selectedList === list.name }"
-            @click="selectList(list.name); OutActionBoxNum=index"
-
-          >
-            <img :src="iconPath(list.icon)" alt="List icon" class="list-icon" />
-            {{ list.name }}
+            @click="pushShow(list,'about1')"
+            >
+            
+              <img :src="iconPath(list.icon)" alt="List icon" class="list-icon" />
+              {{ list.name }}
+              <!-- <router-view></router-view> -->
           </li>
-
+          
           <!-- 分隔线 -->
           <hr class="separator" />
           <!-- 商店 -->
@@ -36,7 +37,7 @@
             v-for="(list, index) in customLists"
             :key="`custom-${index}`"
             :class="{ 'is-selected': selectedList === list.name }"
-            @click="selectList(list.name)"
+            @click="selectList_pushShow(list.name,list,'about2',index)" 
             @contextmenu.prevent="showContextMenu($event, index)"
           >
             <img :src="iconPath(list.icon)" alt="List icon" class="list-icon" />
@@ -70,8 +71,8 @@
               <img :src="iconPath(icon)" alt="Icon" class="icon-preview" />
               </label>
             </div>
-          <button class="add-list-input-button" @click="confirmAddList">确定</button>
-        </div>
+              <button class="add-list-input-button" @click="confirmAddList_convey('about2')">确定</button>
+          </div>
         </ul>
       </div>
     </div>
@@ -93,8 +94,11 @@
     />
   </div>
 
-  <TaskList :action-box-num="OutActionBoxNum"/> <!-- 列表组件，用于显示待办事项列表 -->
+   <!-- 列表组件，用于显示待办事项列表 -->
+  <TaskList :action-box-num="OutActionBoxNum"/> 
 
+ 
+  
 </template>
 
 
@@ -111,15 +115,16 @@ export default {
     },
   },
   components: {
-    TaskList, // 注册任务列表组件
+     TaskList, // 注册任务列表组件
   },
   data() {
     return {
       defaultLists: [
-        { name: "我的一天", tasks: [], icon: "kitty.png" },
-        { name: "重要", tasks: [], icon: "star.png" },
-        { name: "全部任务", tasks: [], icon: "alltask.png" },
+        { name: "我的一天", tasks: [], icon: "kitty.png",id:"1" },
+        { name: "重要", tasks: [], icon: "star.png" ,id:"2"},
+        { name: "全部任务", tasks: [], icon: "alltask.png" ,id:"3"},
       ],
+      
       OutActionBoxNum: 0,
       customLists: [],
       newListName: "",
@@ -131,6 +136,19 @@ export default {
       contextMenuPosition: { x: 0, y: 0 },
       selectedListIndex: null,
     };
+  },
+  //可以绑定多个事件
+  directives: {
+    click1: {
+      mounted(el, binding) {
+        el.addEventListener('click', binding.value);
+      }
+    },
+    click2: {
+      mounted(el, binding) {
+        el.addEventListener('click', binding.value);
+      }
+    }
   },
   created() {
     const savedCustomLists = JSON.parse(localStorage.getItem("customLists"));
@@ -148,14 +166,29 @@ export default {
   },
 
   methods: {
+    pushShow(m,routeName){
+        this.$router.push({
+          name:routeName,
+          query:{
+            id:m.id
+          }
+        })
+    }
+    ,
     iconPath(icon) {
     return require(`@/assets/icon/${icon}`);
   },
     addList() {
       this.showAddListInput = true;
     },
-    selectList(name) {
+    selectList_pushShow(name,m,routeName,m_index) {
       this.$emit("update:selectedList", name);
+      this.$router.push({
+          name:routeName,
+          query:{
+            in_index:m_index
+          }
+        })
     },
     deleteList(index) {
       if (confirm("确定要删除该列表吗？")) {
@@ -166,8 +199,8 @@ export default {
     createTask() {
       this.$emit("createTask");
     },
-    // 确认添加列表
-    confirmAddList() {
+    // 确认添加列表 同时向路由增加一整个对象
+    confirmAddList_convey(routeName) {
       if (!this.newListName.trim()) {
         alert("列表名称不能为空");
         return;
@@ -178,6 +211,17 @@ export default {
       this.newListName = "";
       this.showAddListInput = false;
       this.selectedIcon = this.icons[0];
+
+      //传送并且打开
+      
+
+      this.$router.push({
+          name:routeName,
+          query:{
+            in_index:this.customLists.length-1,
+          }
+        })
+
     },
     // 取消添加列表
     cancelAddList() {
@@ -401,6 +445,7 @@ export default {
     border-radius: 4px;
   }
 
+  
   .context-menu {
   position: absolute;
   background-color: #ffffff;
