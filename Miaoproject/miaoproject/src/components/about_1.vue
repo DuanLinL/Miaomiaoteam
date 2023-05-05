@@ -1,3 +1,5 @@
+
+
 <template>
     <div class="HeadBox">
             <div class="TaskInput">
@@ -7,16 +9,38 @@
             <div class="Task_List">
               <ul>
                 <div v-if="$route.query.id==1" >
-                <li class="list_li" v-for="(list, index) in TaskLists_1" :key= "list">{{ list.name }}
-                  <button  @click="deleteText(index)">删除</button></li>   
+                  
+                <li class="list_li" v-for="(list, index) in TaskLists_1" :key= "list" :class="{ completed: list.completed }" >
+                  {{ list.name }}
+                  <div class="icon_position">
+                    <check style="width: 1em; height: 1em; margin-right: 8px"   @click="completeTodo(index)" />
+                    <Delete style="width: 1em; height: 1em; margin-right: 8px" @click="deleteText(index)" />
+                    <Operation style="width: 1em; height: 1em; margin-right: 8px"  @click="more_Todo(index)"/>
+                  </div>
+                
+                  <!-- <el-container>
+                    <el-header>Header</el-header>
+                    <el-main class="more_none" :class="{more_show: list.more}">Main</el-main>
+                  </el-container> -->
+                </li>   
+
                 </div>
                 <div v-if="$route.query.id==2" >
-                <li class="list_li" v-for="(list, index) in TaskLists_2" :key= "list">{{ list.name }}
-                  <button @click="deleteText(index)">删除</button></li>   
+                <li class="list_li" v-for="(list2, index) in TaskLists_2" :key= "list2"  :class="{ completed: list2.completed }">
+                  
+                  {{ list2.name }}
+
+                  <button  @click="completeTodo(index)" >完成</button>
+                  <button @click="deleteText(index)">删除</button>
+                  
+                  </li>   
                 </div>
+
                 <div v-if="$route.query.id==3" >
-                <li class="list_li" v-for="(list, index) in TaskLists_3" :key= "list">{{ list.name }}
-                  <button @click="deleteText(index)">删除</button></li>   
+                <li class="list_li" v-for="(list) in TaskLists_3" :key= "list"  >
+                  {{ list.name }}
+                  <button @click="deleteText(index)">删除</button>
+                </li> 
                 </div>
             </ul>
             </div>
@@ -27,13 +51,23 @@
         
 </template>
 
-<script>
+
+<script >
+  import {
+        Check,
+        Delete,
+        Edit,
+        Message,
+        Search,
+        Star,
+      } from '@element-plus/icons-vue'
+
  export default{
     name:'about_1',
     mounted(){  
         console.log(this.$route)
     },
-
+  
     data() {
         return {
                 inputText: '' ,// 保存输入框的文本
@@ -46,8 +80,10 @@
                 TaskLists_3: [
                     
                 ],
-                 
+                showModal: false, // 控制弹窗显示
+                selectedTodo: null // 当前选中的代办事项         
         }
+
     },
     methods: {
       saveText() {
@@ -57,6 +93,10 @@
 
         let newList = {
           name:this.inputText,
+          completed: false,
+          more: false,
+          time: '', 
+          remarks: '' 
         }
 
         // 将输入框的文本添加到数组中
@@ -66,9 +106,7 @@
         if(this.$route.query.id==2){
         this.TaskLists_2.push(newList);
         }
-        if(this.$route.query.id==3){
-        this.TaskLists_3.push(newList);
-        }
+        
         this.inputText = ''; // 清空输入框
     },
     deleteText(index) {
@@ -83,17 +121,87 @@
         if(this.$route.query.id==3){
           this.TaskLists_3.splice(index, 1);
         }
-    }
+    },
+
+    more_Todo(index){
+      //展示详情
+      if(this.$route.query.id==1){
+        for (const todo of this.TaskLists_1) {
+            todo.more = false;
+          }    
+          this.TaskLists_1[index].more = true;
+      }
+
+      if(this.$route.query.id==2){
+        for (const todo of this.TaskLists_2) {
+            todo.more = false;
+          }    
+          this.TaskLists_2[index].more = true;
+      }
+
+      if(this.$route.query.id==3){
+        for (const todo of this.TaskLists_3) {
+            todo.more = false;
+          }    
+          this.TaskLists_3[index].more = true;
+      }
+    },
+
+    completeTodo(index) {
+      // 假设点击按钮时，将第一个代办事项设置为已完成
+
+      if(this.$route.query.id==1){
+          this.TaskLists_1[index].completed = true;
+          for (const todo of this.TaskLists_1) {
+            if (todo.completed && !this.TaskLists_3.includes(todo)) {
+              this.TaskLists_3.push(todo);
+            } 
+          }
+      }
+        if(this.$route.query.id==2){
+          this.TaskLists_2[index].completed = true;
+          
+          for (const todo of this.TaskLists_2) {
+            if (todo.completed && !this.TaskLists_3.includes(todo)) {
+              this.TaskLists_3.push(todo);
+            } 
+          }
+        }
+      }
+    
+
   }
 }
+
+
 </script>
 
 <style scoped>
 .list_li{
   position: relative;
+ 
 }
 
-button {
+.completed {
+  text-decoration: line-through;
+}
+
+.icon_position{
+  position: absolute;
+  right: 0.5%;
+}
+
+.more_none{
+  height: 200px;
+  width: 100%;
+  display: none;
+}
+
+.more_show{
+  display: block;
+}
+
+/* button {
   background-color: #e5f134;
   color: #000000;
   border: none;
@@ -114,12 +222,12 @@ button {
   padding: 10px 20px;
 
 
-}
+} */
 
-button:hover {
+/* button:hover {
   transform: translateY(-2px);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-}
+} */
 
 .HeadBox{
   width: 100%;

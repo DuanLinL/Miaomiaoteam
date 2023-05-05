@@ -32,73 +32,17 @@
           <!-- 分隔线 -->
           <hr class="separator" />
 
-          <!-- 自定义分类列表 -->
-          <li
-            v-for="(list, index) in customLists"
-            :key="`custom-${index}`"
-            :class="{ 'is-selected': selectedList === list.name }"
-            @click="selectList_pushShow(list.name,list,'about2',index)" 
-            @contextmenu.prevent="showContextMenu($event, index)"
-          >
-            <img :src="iconPath(list.icon)" alt="List icon" class="list-icon" />
-            {{ list.name }}
-          </li>
-
-          <!-- 添加列表按钮即输入选择框 -->
-          <li class="add-list-item">
-            <button class="add-list-button" ref="addListButton" @click="showAddListInput = true">+ 添加列表</button>
-          </li>
-          <div class="add-list-input" :class="{ 'show': showAddListInput }" @click.stop="">
-            <div class="add-list-input-wrapper" ref="addListInputWrapper">
-              <span class="add-list-input-icon iconfont icon-add"></span>
-              <input
-                type="text"
-                class="add-list-input-text"
-                v-model="newListName"
-                placeholder="输入列表名称"
-              />
-              <span class="add-list-input-icon iconfont icon-close" @click="cancelAddList"></span>
-            </div>
-            <div class="icon-container">
-              <label v-for="icon in icons" :key="icon" class="icon-option">
-              <input
-                type="radio"
-                name="icon"
-                :value="icon"
-                v-model="selectedIcon"
-                class="icon-radio"
-              />
-              <img :src="iconPath(icon)" alt="Icon" class="icon-preview" />
-              </label>
-            </div>
-              <button class="add-list-input-button" @click="confirmAddList_convey('about2')">确定</button>
-          </div>
+         
+          
         </ul>
       </div>
     </div>
 
   </div>
 
-  <!-- 新建分类列表删除按钮 -->
-  <div
-    v-if="contextMenuVisible"
-    class="context-menu"
-    ref="contextMenu"
-    :style="{ left: `${contextMenuPosition.x}px`, top: `${contextMenuPosition.y}px` }"
-    >
-    <img
-      src="@/assets/icon/waste.png"
-      alt="删除"
-      class="delete-icon"
-      @click="deleteList(selectedListIndex); contextMenuVisible = false"
-    />
-  </div>
-
    <!-- 列表组件，用于显示待办事项列表 -->
   <TaskList :action-box-num="OutActionBoxNum"/> 
 
- 
-  
 </template>
 
 
@@ -120,9 +64,9 @@ export default {
   data() {
     return {
       defaultLists: [
-        { name: "我的一天", tasks: [], icon: "kitty.png",id:"1" },
+        { name: "今日任务", tasks: [], icon: "kitty.png",id:"1" },
         { name: "重要", tasks: [], icon: "star.png" ,id:"2"},
-        { name: "全部任务", tasks: [], icon: "alltask.png" ,id:"3"},
+        { name: "已完成", tasks: [], icon: "alltask.png" ,id:"3"},
       ],
       
       OutActionBoxNum: 0,
@@ -137,19 +81,7 @@ export default {
       selectedListIndex: null,
     };
   },
-  //可以绑定多个事件
-  directives: {
-    click1: {
-      mounted(el, binding) {
-        el.addEventListener('click', binding.value);
-      }
-    },
-    click2: {
-      mounted(el, binding) {
-        el.addEventListener('click', binding.value);
-      }
-    }
-  },
+  
   created() {
     const savedCustomLists = JSON.parse(localStorage.getItem("customLists"));
     if (savedCustomLists) {
@@ -199,59 +131,7 @@ export default {
     createTask() {
       this.$emit("createTask");
     },
-    // 确认添加列表 同时向路由增加一整个对象
-    confirmAddList_convey(routeName) {
-      if (!this.newListName.trim()) {
-        alert("列表名称不能为空");
-        return;
-      }
-      const newList = { name: this.newListName, tasks: [], icon: this.selectedIcon };
-      this.customLists.push(newList);
-      localStorage.setItem("customLists", JSON.stringify(this.customLists));
-      this.newListName = "";
-      this.showAddListInput = false;
-      this.selectedIcon = this.icons[0];
-
-      //传送并且打开
-      
-
-      this.$router.push({
-          name:routeName,
-          query:{
-            in_index:this.customLists.length-1,
-          }
-        })
-
-    },
-    // 取消添加列表
-    cancelAddList() {
-      this.showAddListInput = false;
-      this.newListName = "";
-      this.selectedIcon = this.icons[0];
-    },
-    // 显示删除悬浮窗
-    showContextMenu(event, index) {
-      this.contextMenuVisible = true;
-      this.contextMenuPosition = { x: event.clientX, y: event.clientY };
-      this.selectedListIndex = index;
-    },
-    //检查目标是否在悬浮窗
-    closeContextMenu(event) {
-      if (!this.$refs.contextMenu || !this.$refs.contextMenu.contains(event.target)) {
-        this.contextMenuVisible = false;
-      }
-    },
-    // 检查目标是否在选择窗口
-    handleClickOutside(event) {
-      if (
-        this.showAddListInput &&
-        this.$refs.addListInputWrapper &&
-        !this.$refs.addListInputWrapper.contains(event.target) &&
-        event.target !== this.$refs.addListButton
-      ) {
-        this.cancelAddList();
-      }
-    },
+    
   },
 };
 </script>
@@ -289,11 +169,6 @@ export default {
   margin-left: 13px;
 }
 
-
-.iconfont {
-  font-size: 0.5rem;
-  margin-right: 0.5rem;
-}
 
 .sidebar-list {
   list-style-type: none;
@@ -353,86 +228,7 @@ export default {
   border-color: #ffffff;
 }
 
-.add-list-item button {
-  font-size: 1rem;
-  color: #2d2d2c;
-  font-family: "Arial", sans-serif;
-  list-style-type: none;
-  padding: 4px 0px; 
-  width: 200px;
-  height: 35px;
-  background-color: #ffffff;
-  border: 2px dashed #fffc61;
-  border-radius: 12px;
-}
 
-.add-list-input {
-  position: relative;
-  top:40%;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background-color: #ffffff;
-  border: 1px dashed #c3c3c3;
-  border-radius: 4px;
-  transition: all 0.3s;
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.add-list-input.show {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: all;
-}
-
-.add-list-input-wrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.add-list-input-icon {
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
-  width: 25px;
-  height: 25px;
-}
-
-.add-list-input-text {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-}
-
-.add-list-input-button {
-    display: block;
-    width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: #ffff38;/*选择窗口确定按钮样式 */
-    border: none;
-    border-radius: 4px;
-    color: #5d5d5d;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .icon-preview {
-    width: 25px; /* 选择窗口图标大小*/
-    height: 25px; 
-}
-
-.icon-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.icon-option {
-  flex-basis: 20%; /* 选择窗口图标排列*/ 
-  margin-bottom: 10px;
-}
-  
   .list-icon {
     font-size: 1.2rem;
     margin-right: 0.5rem;
