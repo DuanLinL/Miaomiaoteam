@@ -1,10 +1,8 @@
-
-
 <template>
     <div class="HeadBox">
             <div class="TaskInput">
               <input v-model="inputText" type="text" placeholder="请输入文本">
-              <div  @click="saveText" class="Input_but">按钮</div>
+              <el-button @click="saveText" class="Input_but" type="info" round>+</el-button>
             </div>
             <div class="Task_List">
               <ul>
@@ -18,10 +16,6 @@
                     <Operation style="width: 1em; height: 1em; margin-right: 8px"  @click="more_Todo(index)"/>
                   </div>
                 
-                  <!-- <el-container>
-                    <el-header>Header</el-header>
-                    <el-main class="more_none" :class="{more_show: list.more}">Main</el-main>
-                  </el-container> -->
                 </li>   
 
                 </div>
@@ -29,18 +23,23 @@
                 <li class="list_li" v-for="(list2, index) in TaskLists_2" :key= "list2"  :class="{ completed: list2.completed }">
                   
                   {{ list2.name }}
-
-                  <button  @click="completeTodo(index)" >完成</button>
-                  <button @click="deleteText(index)">删除</button>
-                  
+                  <div class="icon_position">
+                  <check style="width: 1em; height: 1em; margin-right: 8px"   @click="completeTodo(index)" />
+                    <Delete style="width: 1em; height: 1em; margin-right: 8px" @click="deleteText(index)" />
+                    <Operation style="width: 1em; height: 1em; margin-right: 8px"  @click="more_Todo(index)"/>
+                  </div>
                   </li>   
                 </div>
 
                 <div v-if="$route.query.id==3" >
                 <li class="list_li" v-for="(list) in TaskLists_3" :key= "list"  >
                   {{ list.name }}
-                  <button @click="deleteText(index)">删除</button>
-                </li> 
+                  <div class="icon_position">
+                    <Delete style="width: 1em; height: 1em; margin-right: 8px" @click="deleteText(index)" />
+                    <Operation style="width: 1em; height: 1em; margin-right: 8px"  @click="more_Todo(index)"/>
+                  </div>
+                  </li> 
+                
                 </div>
             </ul>
             </div>
@@ -72,10 +71,10 @@
         return {
                 inputText: '' ,// 保存输入框的文本
                 TaskLists_1: [
-              
+
                 ],
                 TaskLists_2: [
-                    
+
                 ],
                 TaskLists_3: [
                     
@@ -259,7 +258,7 @@
 }
 
 .Input_but{
-  background-color: #e6e603;
+  background-color: #141411;
   width: 9%;
   height: 32%;
   margin-left: 5%;
@@ -282,13 +281,13 @@ ul{
 
 .HeadBox .Task_List li{
   list-style-type: none;
-  background-color: #dadb9e;
+  background-color: #ffffff;
   margin-top: 2%;
   margin-left: 1%;
   margin-right: 4%;
   border-radius: 5px;
   min-height: 40px;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-indent: 1.2em;
   display: flex;
   align-items: center;

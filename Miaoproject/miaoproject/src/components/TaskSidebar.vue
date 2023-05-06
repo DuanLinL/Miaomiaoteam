@@ -24,7 +24,7 @@
           <!-- 商店 -->
           <li
             :class="{ 'is-selected': selectedList === '喵喵小铺', 'meow-shop': true }"
-            @click="selectList('喵喵小铺')"
+            @click="pushShow_shop('shop')"
           >
             <img src="@/assets/icon/shop.png" alt="喵喵小铺" class="list-icon" />
             喵喵小铺
@@ -98,6 +98,13 @@ export default {
   },
 
   methods: {
+    pushShow_shop(routeName){
+      this.$router.push({
+          name:routeName,
+        })
+    },
+
+
     pushShow(m,routeName){
         this.$router.push({
           name:routeName,
@@ -113,6 +120,7 @@ export default {
     addList() {
       this.showAddListInput = true;
     },
+
     selectList_pushShow(name,m,routeName,m_index) {
       this.$emit("update:selectedList", name);
       this.$router.push({
@@ -122,6 +130,7 @@ export default {
           }
         })
     },
+
     deleteList(index) {
       if (confirm("确定要删除该列表吗？")) {
         this.customLists.splice(index, 1);
